@@ -173,13 +173,23 @@ class FileOperation {
         builder.append("import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;");
         builder.append("\n");
         builder.append("import com.netflix.hystrix.contrib.javanica.command.AsyncResult;");
-        builder.append("\n");
+        builder.append("\n\n");
+
         builder.append("import org.springframework.stereotype.Service;");
         builder.append("\n");
         builder.append("import org.springframework.beans.factory.annotation.Autowired;");
-        builder.append("\n");
+        builder.append("\n\n");
+
         builder.append("import java.util.concurrent.Future;");
         builder.append("\n");
+        builder.append("import java.lang.Throwable;");
+        builder.append("\n\n");
+
+        builder.append("import org.slf4j.LoggerFactory;");
+        builder.append("\n");
+        builder.append("import org.slf4j.Logger;");
+        builder.append("\n");
+
 
         PsiImportStatement[] statements = psiJavaFile.getImportList().getImportStatements();
         for (PsiImportStatement s : statements) {
@@ -217,7 +227,13 @@ class FileOperation {
 
         //Class
         String className = psiClass.getName().replace("Controller", "Proxy");
-        builder.append("public ").append("class ").append(className).append(" {").append("\n");
+        builder.append("").append("class ").append(className).append(" {").append("\n");
+
+        //导入日志
+        builder.append("\n")
+                .append("\tprivate static final Logger logger = LoggerFactory.getLogger(")
+                .append(className)
+                .append(".class);\n\n");
 
         //@Autowired
         builder.append("\t@Autowired\n");
@@ -300,8 +316,12 @@ class FileOperation {
             builder.append(fallbackMethodName);
             builder.append("(")
                     .append(methodTypeParams)
+                    .append(", Throwable e")
                     .append(")")
                     .append("{\n")
+                    .append("\t\t")
+                    .append("logger.error(e.getMessage(), e);")
+                    .append("\n")
                     .append("\t\t")
                     .append("return null;\n")
                     .append("\t}\n");
@@ -356,8 +376,12 @@ class FileOperation {
             builder.append(asyncFallbackMethodName);
             builder.append("(")
                     .append(methodTypeParams)
+                    .append(", Throwable e")
                     .append(")")
                     .append("{\n")
+                    .append("\t\t")
+                    .append("logger.error(e.getMessage(), e);")
+                    .append("\n")
                     .append("\t\t")
                     .append("return null;\n")
                     .append("\t}\n");
