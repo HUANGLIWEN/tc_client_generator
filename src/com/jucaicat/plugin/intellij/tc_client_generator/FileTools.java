@@ -129,6 +129,18 @@ class FileTools {
         }
     }
 
+
+    /**
+     * 文件是否存在.
+     *
+     * @param filePath 写入的文件名
+     * @return 结果
+     */
+    static boolean fileIsExists(String filePath) {
+        File writeFile = new File(filePath);
+        return writeFile.exists();
+    }
+
     /**
      * 清除文件内容.
      *

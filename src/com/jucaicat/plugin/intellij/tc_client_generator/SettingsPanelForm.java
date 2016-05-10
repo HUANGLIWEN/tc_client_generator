@@ -8,38 +8,30 @@ import javax.swing.*;
  */
 public class SettingsPanelForm {
     private JPanel rootComponent;
-    private JTextField groupKeyField;
     private JTextField commandPropertiesField;
     private JTextField feignClientField;
 
-    @SuppressWarnings("unused")
-    private JLabel groupKey;
     @SuppressWarnings("unused")
     private JLabel commandPropertiesLabel;
     @SuppressWarnings("unused")
     private JLabel feignClientLabel;
 
 
-    public JPanel getRootComponent() {
+    JPanel getRootComponent() {
         return rootComponent;
     }
 
-    public void setData(GeneratorComponent data) {
-        groupKeyField.setText(data.getGroupKeyPhrase());
+    void setData(GeneratorComponent data) {
         commandPropertiesField.setText(data.getCommandPropertiesPhrase());
         feignClientField.setText(data.getFeignClientPhrase());
     }
 
-    public void getData(GeneratorComponent data) {
-        data.setGroupKeyPhrase(groupKeyField.getText());
+    void getData(GeneratorComponent data) {
         data.setCommandPropertiesPhrase(commandPropertiesField.getText());
         data.setFeignClientPhrase(feignClientField.getText());
     }
 
-    public boolean isModified(GeneratorComponent data) {
-        boolean isGroupKeyChanged = groupKeyField.getText() != null ?
-                !groupKeyField.getText().equals(data.getGroupKeyPhrase()) :
-                data.getGroupKeyPhrase() != null;
+    boolean isModified(GeneratorComponent data) {
 
         boolean isCommandPropertiesChanged = commandPropertiesField.getText() != null ?
                 !commandPropertiesField.getText().equals(data.getCommandPropertiesPhrase()) :
@@ -49,6 +41,6 @@ public class SettingsPanelForm {
                 !feignClientField.getText().equals(data.getFeignClientPhrase()) :
                 data.getFeignClientPhrase() != null;
 
-        return isGroupKeyChanged || isCommandPropertiesChanged || isFeignClientChanged;
+        return isCommandPropertiesChanged || isFeignClientChanged;
     }
 }

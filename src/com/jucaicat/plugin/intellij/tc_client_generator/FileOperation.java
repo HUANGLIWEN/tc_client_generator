@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * 生成proxy包下面的文件
  */
 class FileOperation {
-    private String groupKey;
+
     private String commandProperties;
     private String feignClient;
 
@@ -23,12 +23,10 @@ class FileOperation {
     private PsiJavaFile psiJavaFile;
     private PsiClass psiClass;
 
-    FileOperation(String groupKey,
-                  String commandProperties,
+    FileOperation(String commandProperties,
                   String feignClient,
                   VirtualFile virtualFile,
                   PsiJavaFile psiJavaFile) {
-        this.groupKey = groupKey;
         this.commandProperties = commandProperties;
         this.feignClient = feignClient;
         this.virtualFile = virtualFile;
@@ -252,6 +250,9 @@ class FileOperation {
             //同步fallback方法名称
             String fallbackMethodName = methodName + "FBM";
 
+            //threadPoolKey方法名称
+            String threadPoolKeyMethodName = methodName + "TPK";
+
             //异步方法名称
             String asyncMethodName = methodName + "Async";
             //异步fallback方法名称
@@ -281,16 +282,16 @@ class FileOperation {
             }
 
             //生成同步方法注解
-            builder.append("\n\t@HystrixCommand(groupKey = \"")
-                    .append(groupKey).append("\",\n")
+            builder.append("\n\t@HystrixCommand(threadPoolKey = \"")
+                    .append(threadPoolKeyMethodName).append("\",\n")
                     .append("\t\t\tfallbackMethod = \"")
                     .append(fallbackMethodName)
                     .append("\",\n")
                     .append("\t\t\tcommandProperties = {")
-                    .append("\n\t\t\t\t")
+                    .append("\n\t\t\t\t\t")
                     .append(commandProperties)
-                    .append("\n")
-                    .append("\t\t})\n");
+                    //.append("\n")
+                    .append("\t\t\t})\n");
 
             //生成同步方法
             builder.append("\tpublic ");
@@ -327,16 +328,16 @@ class FileOperation {
                     .append("\t}\n");
 
             //生成异步方法注解
-            builder.append("\n\t@HystrixCommand(groupKey = \"")
-                    .append(groupKey).append("\",\n")
+            builder.append("\n\t@HystrixCommand(threadPoolKey = \"")
+                    .append(threadPoolKeyMethodName).append("\",\n")
                     .append("\t\t\tfallbackMethod = \"")
                     .append(asyncFallbackMethodName)
                     .append("\",\n")
                     .append("\t\t\tcommandProperties = {")
-                    .append("\n\t\t\t\t")
+                    .append("\n\t\t\t\t\t")
                     .append(commandProperties)
-                    .append("\n")
-                    .append("\t\t})\n");
+                    //.append("\n")
+                    .append("\t\t\t})\n");
 
             //生成异步方法
             builder.append("\tpublic ");
@@ -395,11 +396,22 @@ class FileOperation {
     }
 
     private void generateProxyFile() {
-        FileTools.string2File(getProxyFullPath(), generateProxy());
+        checkThenGenerateFile(getProxyFullPath(), generateProxy());
     }
 
     private void generateApiFile() {
-        FileTools.string2File(getApiFullPath(), generateApiInterface());
+        checkThenGenerateFile(getApiFullPath(), generateApiInterface());
+    }
+
+    private void checkThenGenerateFile(String fileName, String content) {
+
+        if (!FileTools.fileIsExists(fileName)) {
+            FileTools.string2File(fileName, content);
+        } else {
+            //使用备份文件
+            fileName = fileName.replace(".java", "_bak.java");
+            FileTools.string2File(fileName, content);
+        }
     }
 
     private String getClassName() {

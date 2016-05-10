@@ -24,13 +24,12 @@ public class GeneratorAction extends AnAction {
         GeneratorComponent generatorComponent = module.getComponent(GeneratorComponent.class);
 
         String commandProperties = generatorComponent.getCommandPropertiesPhrase();
-        String groupKey = generatorComponent.getGroupKeyPhrase();
         String feignClient = generatorComponent.getFeignClientPhrase();
 
         VirtualFile virtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE);
         PsiJavaFile psiFile = (PsiJavaFile) e.getData(CommonDataKeys.PSI_FILE);
 
-        FileOperation operation = new FileOperation(groupKey, commandProperties, feignClient, virtualFile, psiFile);
+        FileOperation operation = new FileOperation(commandProperties, feignClient, virtualFile, psiFile);
 
         operation.sayHello();
     }

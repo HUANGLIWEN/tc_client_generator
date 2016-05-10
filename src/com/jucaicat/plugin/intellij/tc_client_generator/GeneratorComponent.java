@@ -7,7 +7,6 @@ import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +22,6 @@ import javax.swing.*;
 @State(name = "com.jucaicat.plugin.intellij.tc_client_generator.GeneratorComponent", storages = {@Storage(file = StoragePathMacros.MODULE_FILE
 )})
 public class GeneratorComponent implements ModuleComponent, Configurable, PersistentStateComponent<GeneratorComponent> {
-    public String groupKeyPhrase = "serviceOperationalGroup";
     public String commandPropertiesPhrase = "@HystrixProperty(name = \"execution.isolation.thread.timeoutInMilliseconds\", value = \"20000\")\n";
     public String feignClientPhrase = "serviceOperationalMa1Mi0R0";
     private SettingsPanelForm form;
@@ -90,24 +88,6 @@ public class GeneratorComponent implements ModuleComponent, Configurable, Persis
     @Override
     public void disposeUIResources() {
 
-    }
-
-    public void sayHello() {
-        // Show dialog with message
-        Messages.showMessageDialog(
-                groupKeyPhrase,
-                "Sample",
-                Messages.getInformationIcon()
-
-        );
-    }
-
-    String getGroupKeyPhrase() {
-        return groupKeyPhrase;
-    }
-
-    void setGroupKeyPhrase(final String groupKeyPhrase) {
-        this.groupKeyPhrase = groupKeyPhrase;
     }
 
     String getCommandPropertiesPhrase() {
