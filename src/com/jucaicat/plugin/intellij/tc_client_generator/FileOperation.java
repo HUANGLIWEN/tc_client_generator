@@ -225,7 +225,7 @@ class FileOperation {
 
         //Class
         String className = psiClass.getName().replace("Controller", "Proxy");
-        builder.append("").append("class ").append(className).append(" {").append("\n");
+        builder.append("public").append(" class ").append(className).append(" {").append("\n");
 
         //导入日志
         builder.append("\n")
