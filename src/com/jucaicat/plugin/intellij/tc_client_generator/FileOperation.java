@@ -310,6 +310,8 @@ class FileOperation {
                     .append(");\n")
                     .append("\t}\n\n");
 
+            //若方法无传入参数,则不需要在Throwable方法之前添加逗号
+            String comma = "".equals(methodTypeParams.toString()) ? "" : ", ";
             //生成同步fallback方法
             builder.append("\tpublic ");
             builder.append(m.getReturnType().getPresentableText());
@@ -317,7 +319,9 @@ class FileOperation {
             builder.append(fallbackMethodName);
             builder.append("(")
                     .append(methodTypeParams)
-                    .append(", Throwable e")
+                    //.append(", Throwable e")
+                    .append(comma)
+                    .append("Throwable e")
                     .append(")")
                     .append("{\n")
                     .append("\t\t")
@@ -367,8 +371,6 @@ class FileOperation {
                     .append("\t\t};\n")
                     .append("\t}\n\n");
 
-            //若方法无传入参数,则不需要在Throwable方法之前添加逗号
-            String comma = "".equals(methodTypeParams.toString()) ? "" : ", ";
             //生成异步fallback方法
             builder.append("\tpublic ");
             builder.append("Future<");
