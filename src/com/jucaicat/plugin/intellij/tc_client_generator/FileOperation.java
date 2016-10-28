@@ -132,6 +132,10 @@ class FileOperation {
         PsiMethod[] methods = psiClass.getMethods();
 
         for (PsiMethod m : methods) {
+            if (("private").equals(m.getModifierList().getText())) {
+                continue;
+            }
+
             PsiAnnotation[] annotations = m.getModifierList().getAnnotations();
             for (PsiAnnotation a : annotations) {
                 builder.append("\t");
@@ -244,6 +248,10 @@ class FileOperation {
         PsiMethod[] methods = psiClass.getMethods();
 
         for (PsiMethod m : methods) {
+            //private标记的方法不用生成
+            if (("private").equals(m.getModifierList().getText())) {
+                continue;
+            }
             //方法名称
             //同步方法名称
             String methodName = m.getName();
